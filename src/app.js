@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(myconnection(mysql, {
  host: 'localhost',
  user: 'root',
- password: 'root',
+ password: 'Tulipan14',
  port: 3306,
  database: 'nodelogin'
 }, 'single'));
