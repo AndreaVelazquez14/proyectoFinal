@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 
 function login(req, res) {
   if (req.session.loggedin != true) {
@@ -20,7 +21,7 @@ function auth(req, res) {
           bcrypt.compare(data.password, element.password, (err, isMatch) => {
 
             if (!isMatch) {
-              res.render('login/index', { error: 'Error: Contrasena incorrecta' });
+              res.render('login/index', { error: 'Contrasena incorrecta' });
             } else {
               req.session.loggedin = true;
               req.session.name = element.name;
@@ -30,11 +31,28 @@ function auth(req, res) {
         });
 
       } else {
-        res.render('login/index', { error: 'Error: Usuario no existe' });
+        res.render('login/index', { error: 'Usuario no existe' });
       }
     });
   });
 }
+
+
+// // ENVIAR CORREO
+
+// const createTrans = () => {
+// 	const transport = nodemailer.createTransport({
+//     host : 'smtp.gmail.com',
+// 		port : 587,
+// 		auth : {
+// 			user : "",
+// 			pass : ""
+//     }
+//   });	
+//   return transport;
+// }
+
+// REGISTRO
 
 function register(req, res) {
   if (req.session.loggedin != true) {
@@ -51,7 +69,7 @@ function storeUser(req, res) {
   req.getConnection((err, conn) => {
     conn.query('SELECT * FROM users WHERE email = ?', [data.email], (err, userdata) => {
       if (userdata.length > 0) {
-        res.render('login/register', { error: 'Error: Usuario ya existe' });
+        res.render('login/register', { error: 'Usuario ya existe' });
       } else {
         bcrypt.hash(data.password, 12).then(hash => {
           data.password = hash;
@@ -76,6 +94,14 @@ function logout(req, res) {
   res.redirect('/');
 }
 
+// conocenos
+function conocenos(req, res) {
+  if (req.session.loggedin != true) {
+    res.render('login/conocenos');
+  } else {
+    res.redirect('/');
+  }
+}
 
 module.exports = {
   login,
@@ -83,4 +109,5 @@ module.exports = {
   storeUser,
   auth,
   logout,
+  conocenos
 }

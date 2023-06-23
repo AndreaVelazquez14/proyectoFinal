@@ -6,7 +6,9 @@ const session = require('express-session');
 const bodyParser = require('body-parser')
 const loginRoutes = require('./routes/login');
 const { redirect } = require('express/lib/response');
+const nodemailer = require('nodemailer');
 
+// SERVIDOR
 const app = express();
 app.set('port', 5000);
 
@@ -21,6 +23,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+// BASE DE DATOS
 app.use(myconnection(mysql, {
  host: 'localhost',
  user: 'root',
@@ -39,6 +42,7 @@ app.listen(app.get('port'), () => {
  console.log('listening on port ', app.get('port'));
 });
 
+// LOGIN
 app.use('/', loginRoutes);
 
 app.get('/', (req, res) => {
