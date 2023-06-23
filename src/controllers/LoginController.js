@@ -31,7 +31,7 @@ function auth(req, res) {
         });
 
       } else {
-        res.render('login/index', { error: 'Usuario no existe' });
+        res.render('login/index', { error: 'Usuario no encontrado' });
       }
     });
   });
@@ -87,6 +87,7 @@ function storeUser(req, res) {
   });
 }
 
+
 function logout(req, res) {
   if (req.session.loggedin) {
     req.session.destroy();
@@ -94,14 +95,26 @@ function logout(req, res) {
   res.redirect('/');
 }
 
-// conocenos
-function conocenos(req, res) {
-  if (req.session.loggedin != true) {
-    res.render('login/conocenos');
-  } else {
-    res.redirect('/');
-  }
+// Consulta usuarios
+function administrar(req, res) {
+  req.getConnection((err, conn) => {
+    if (err) {
+      console.error('Error al conectar a la base de datos: ' + err.stack);
+      return;
+    }
+
+    conn.query('SELECT * FROM users', (err, userdata) => {
+      if (err) {
+        console.error('Error al realizar la consulta: ' + err.stack);
+        return;
+      }
+
+      // Renderizar la vista 'administrar' y pasar los datos de la consulta como contexto
+      res.render('login/administrar', { usuarios: userdata });
+    });
+  });
 }
+
 
 module.exports = {
   login,
@@ -109,5 +122,5 @@ module.exports = {
   storeUser,
   auth,
   logout,
-  conocenos
+  administrar
 }

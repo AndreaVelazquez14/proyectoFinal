@@ -52,3 +52,15 @@ app.get('/', (req, res) => {
 		res.redirect('/login');
 	}
 });
+
+app.get('/usuarios', (req, res) => {
+	connection.query('SELECT * FROM users', (err, userdata) => {
+	  if (err) {
+		console.error('Error al realizar la consulta: ' + err.stack);
+		return;
+	  }
+  
+	  // Enviar los datos de la consulta al HTML
+	  res.send(userdata);
+	});
+  });

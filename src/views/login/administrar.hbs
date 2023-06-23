@@ -1,0 +1,21 @@
+<div class="p-4">
+  <h1 class="text-3xl font-bold mb-4">Administrar usuarios</h1>
+  <table class="min-w-full bg-white border border-gray-300">
+    <thead>
+      <tr>
+        <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+        <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Email</th>
+        <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Contraseña</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each usuarios}}
+      <tr class="table-row-hover">
+        <td class="px-6 py-4 whitespace-no-wrap">{{this.name}}</td>
+        <td class="px-6 py-4 whitespace-no-wrap">{{this.email}}</td>
+        <td class="px-6 py-4 whitespace-no-wrap">{{this.password}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
