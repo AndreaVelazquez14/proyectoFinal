@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(myconnection(mysql, {
  host: 'localhost',
  user: 'root',
- password: 'Tulipan14',
+ password: 'root',
  port: 3306,
  database: 'nodelogin'
 }, 'single'));
@@ -42,10 +42,8 @@ app.listen(app.get('port'), () => {
 app.use('/', loginRoutes);
 
 app.get('/', (req, res) => {
-	if (req.session.loggedin) {
-		let name = req.session.name;
-
- 		res.render('home', { name });
+	if (req.session.loggedin==true) {
+ 		res.render('home', {name: req.session.name});
 	} else {
 		res.redirect('/login');
 	}
