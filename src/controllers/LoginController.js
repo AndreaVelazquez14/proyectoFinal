@@ -9,6 +9,14 @@ function login(req, res) {
   }
 }
 
+function resetPassword(req, res) {
+  if (req.session.loggedin != true) {
+    res.render('login/resetPassword');
+  } else {
+    res.redirect('/');
+  }
+}
+
 function auth(req, res) {
   const data = req.body;
 
@@ -37,23 +45,6 @@ function auth(req, res) {
   });
 }
 
-
-// // ENVIAR CORREO
-
-// const createTrans = () => {
-// 	const transport = nodemailer.createTransport({
-//     host : 'smtp.gmail.com',
-// 		port : 587,
-// 		auth : {
-// 			user : "",
-// 			pass : ""
-//     }
-//   });	
-//   return transport;
-// }
-
-// REGISTRO
-
 function register(req, res) {
   if (req.session.loggedin != true) {
 
@@ -66,25 +57,35 @@ function register(req, res) {
 function storeUser(req, res) {
   const data = req.body;
 
-  req.getConnection((err, conn) => {
-    conn.query('SELECT * FROM users WHERE email = ?', [data.email], (err, userdata) => {
-      if (userdata.length > 0) {
-        res.render('login/register', { error: 'Usuario ya existe' });
-      } else {
-        bcrypt.hash(data.password, 12).then(hash => {
-          data.password = hash;
-          req.getConnection((err, conn) => {
-            conn.query('INSERT INTO users SET ?', [data], (err, rows) => {
-              req.session.loggedin = true;
-              req.session.name = data.name;
-              
-              res.redirect('/');
-            });
-          });
+  // Hash de la contraseña
+  bcrypt.hash(data.password, 12)
+    .then(hash => {
+      data.password = hash;
+
+      // Aquí deberías utilizar tu conexión a la base de datos para realizar la inserción
+      req.getConnection((err, conn) => {
+        if (err) {
+          console.error('Error al conectar a la base de datos: ' + err.stack);
+          return;
+        }
+
+        conn.query('INSERT INTO users SET ?', [data], (err, result) => {
+          if (err) {
+            console.error('Error al realizar la inserción en la base de datos: ' + err.stack);
+            return;
+          }
+
+          req.session.loggedin = true;
+          req.session.name = data.name;
+
+          res.redirect('/');
         });
-      }
+      });
+    })
+    .catch(err => {
+      console.error('Error al generar el hash de la contraseña: ' + err.stack);
+      res.redirect('/');
     });
-  });
 }
 
 
@@ -122,5 +123,6 @@ module.exports = {
   storeUser,
   auth,
   logout,
-  administrar
+  administrar,
+  resetPassword
 }

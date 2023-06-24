@@ -12,6 +12,12 @@
         <th
           class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
           Contraseña</th>
+        <th
+          class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+          Pregunta</th>
+        <th
+          class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+          Respuesta</th>
       </tr>
     </thead>
     <tbody>
@@ -20,7 +26,8 @@
         <td class="px-6 py-4 whitespace-no-wrap">{{this.name}}</td>
         <td class="px-6 py-4 whitespace-no-wrap">{{this.email}}</td>
         <td class="px-6 py-4 whitespace-no-wrap">{{this.password}}</td>
-        <td class="px-6 py-4 whitespace-no-wrap">{{this.answer1}}</td>
+        <td class="px-6 py-4 whitespace-no-wrap">{{this.securityQuestion}}</td>
+        <td class="px-6 py-4 whitespace-no-wrap">{{this.securityAnwser}}</td>
       </tr>
       {{/each}}
     </tbody>
