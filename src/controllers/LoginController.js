@@ -45,7 +45,7 @@ function resetPassword(req, res) {
           return res.render('login/resetPassword', { error: 'Respuesta incorrecta o pregunta de seguridad inválida' });
         }
       } else {
-        return res.render('login/resetPassword', { error: 'Usuario no encontrado' });
+        return res.render('login/resetPassword');
       }
     });
   });
