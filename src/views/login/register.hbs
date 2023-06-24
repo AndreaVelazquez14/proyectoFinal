@@ -4,17 +4,19 @@ shadow-1g text-gray-800">
 
     <form action="" method="POST" class="mt-4">
 
-        <input type="text" name="name" placeholder="Nombre" class="border border-gray-200 w-full text-lg placeholder -gray-500 p-2 my-2
-bg-gray-200 flocus:bg-white" required>
+        <input type="text" name="name" placeholder="Nombre"
+            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 bg-gray-200 focus:bg-white"
+            pattern="^[a-zA-Z]+$" required>
 
-        <input type="email" name="email" placeholder="Email" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2
-focus :bg-white" required>
+        <input type="email" name="email" placeholder="Email"
+            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" required>
 
-        <input type="password" name="password" placeholder="Contraseña" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2
-focus :bg-white" required>
 
-        <button type="submit" class="rounded-md bg-red-500 w-full text-lg text-white
-font-semibold p-2 my-3 hover :bg-red-600 focus:bg-red-700">Unirse</button>
+        <input type="password" name="password" placeholder="Contraseña"
+            class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus :bg-white" required>
+
+        <button type="submit"
+            class="rounded-md bg-red-500 w-full text-lg text-white font-semibold p-2 my-3 hover :bg-red-600 focus:bg-red-700">Unirse</button>
 
     </form>
 

@@ -10,5 +10,4 @@ router.post('/register', LoginController.storeUser);
 router.get('/logout', LoginController.logout);
 
 router.get('/administrar', LoginController.administrar);
-
 module.exports = router;
