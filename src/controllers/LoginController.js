@@ -10,12 +10,50 @@ function login(req, res) {
 }
 
 function resetPassword(req, res) {
-  if (req.session.loggedin != true) {
-    res.render('login/resetPassword');
-  } else {
-    res.redirect('/');
-  }
+  const data = req.body;
+  const newPassword = req.body.newPassword; // Obtener la nueva contraseña del cuerpo de la solicitud
+
+  req.getConnection((err, conn) => {
+    if (err) {
+      console.error('Error al establecer la conexión: ' + err.stack);
+      return res.render('login/resetPassword', { error: 'Error de conexión a la base de datos' });
+    }
+
+    conn.query('SELECT * FROM users WHERE email = ?', [data.email], (err, userdata) => {
+      if (err) {
+        console.error('Error al realizar la consulta: ' + err.stack);
+        return res.render('login/resetPassword', { error: 'Error al consultar la base de datos' });
+      }
+
+      if (userdata.length > 0) {
+        const user = userdata[0]; // Obtener el primer usuario encontrado
+
+        if (data.securityQuestion === user.securityQuestion && data.securityAnswer === user.securityAnswer) {
+          const hashedPassword = bcrypt.hashSync(newPassword, 10); // Hashear la nueva contraseña
+
+          conn.query('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, data.email], (err, result) => {
+            if (err) {
+              console.error('Error al actualizar la contraseña: ' + err.stack);
+              return res.render('login/resetPassword', { error: 'Error al actualizar la contraseña' });
+            }
+
+            req.session.loggedin = true;
+            req.session.name = user.name;
+            return res.redirect('/');
+          });
+        } else {
+          return res.render('login/resetPassword', { error: 'Respuesta incorrecta o pregunta de seguridad inválida' });
+        }
+      } else {
+        return res.render('login/resetPassword', { error: 'Usuario no encontrado' });
+      }
+    });
+  });
 }
+
+
+
+
 
 function auth(req, res) {
   const data = req.body;
